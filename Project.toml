@@ -1,0 +1,4 @@
+name = "PeachShell"
+uuid = "0b9cc722-52fa-4988-b8d1-5a24d5db61fd"
+authors = ["Eduardo Barrancos <eduardobarrancos11488@gmail.com>"]
+version = "0.1.0"
