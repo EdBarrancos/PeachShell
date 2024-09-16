@@ -11,11 +11,19 @@ abstract type PSapp end;
 struct PeachShellApp <: PSApp
     events::Queue{Event}
     history::Stack{Menu}
-    menus::Vector{Menu}
+    menus::Vector{Menu} # Needed?
+    permanentCommands::Vector{Command}
 end
 
-PeachShellApp() = PeachShellApp(Queue{Event}(), Stack{Menu}(), Vector{Menu}())
+PeachShellApp() = PeachShellApp(
+    Queue{Event}(), 
+    Stack{Menu}(), 
+    Vector{Menu}(), 
+    Vector{Command}())
 
-currentwindow(app::PSApp)::Menu = first(app.history)
-initializermenu(app::PSapp)::Menu = first(app.menus)
-hookmenu(app::PSapp, menu::Menu) = push!(app.menus, menu)
+currentWindow(app::PSApp)::Menu = first(app.history)
+initializerMenu(app::PSapp)::Menu = first(app.menus)
+hookMenu(app::PSapp, menu::Menu) = push!(app.menus, menu)
+hookPermanentCommand(app::PSapp, command::Command) = push!(
+    app.permanentCommands,
+    command)
