@@ -8,3 +8,4 @@ A Command Line Interface framework for julia
 - Handle shortcuts
 - Tested
 - Chain commands
+- Customizability to the maximum
