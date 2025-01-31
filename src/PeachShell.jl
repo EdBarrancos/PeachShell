@@ -1,3 +1,4 @@
 module PeachShell
-    include("PeachCLI.jl")
-end 
+include("PeachShellInterface.jl")
+include("PeachShellApp.jl")
+end
