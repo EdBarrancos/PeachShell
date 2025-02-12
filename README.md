@@ -12,8 +12,10 @@ A Command Line Interface framework for julia
 
 ## TODOs
 
-- [ ] Exit app command
+- [x] Exit app command
 - [ ] Go to the previous menu command
 - [ ] Go to menu command
 - [ ] Chain commands
 - [ ] Buffers
+- [ ] Command autocomplete (Not sure how to do this)
+- [ ] History

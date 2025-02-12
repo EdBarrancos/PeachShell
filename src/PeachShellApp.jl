@@ -28,6 +28,12 @@ commandPrompt(::PeachShellAppType)::String = "-> "
 
 findCommand(app::PeachShellAppType, input::AbstractString)::Union{Tuple{Command,Vector{AbstractString}},Missing} =
     begin
+        # Generic first then specific
+        for command in app.systemWideCommands
+            if isCommand(app, command, input)
+                return (command, getArgs(app, command, input))
+            end
+        end
         return missing
     end
 
@@ -42,6 +48,7 @@ readEvalLoop(app::PeachShellAppType) = begin
             commandNotFound(app, commandInput)
             continue
         end
+        evaluate(app, command[begin], command[end])
     end
 end
 
@@ -49,6 +56,11 @@ boot(app::PeachShellAppType) = begin
     opening(app)
     enter(app, currentMenu(app))
     push!(app.systemWideCommands, ExitCommand())
+end
+
+destroy(app::PeachShellAppType) = begin
+    log(app, "Be seing you...")
+    exit()
 end
 
 start(app::PeachShellAppType) = begin
