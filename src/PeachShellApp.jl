@@ -8,28 +8,23 @@ abstract type PeachShellAppType <: PsApp end
 struct PeachShellApp <: PeachShellAppType
     events::Queue{Event}
     history::Stack{Menu}
-    currentMenu::Menu
     systemWideCommands::Vector{Command}
 end
 
 PeachShellApp() = PeachShellApp(
     Queue{Event}(),
     push!(Stack{Menu}(), MainMenu()),
-    MainMenu(),
     Vector{Command}())
 
+opening(app::PeachShellAppType) = log(app, "Welcome to PeachShellApp")
 currentWindow(app::PeachShellAppType)::Menu = first(app.history)
-currentMenu(app::PeachShellAppType)::Menu = app.currentMenu
+currentMenu(app::PeachShellAppType)::Menu = first(app.history)
 hookSystemWideCommand(app::PeachShellAppType, command::Command) = push!(
     app.systemWideCommands,
     command)
 
-log(::PeachShellAppType, toLog...) = println(reduce(*, map(string, toLog)))
+log(::PeachShellAppType, toLog...; terminator="\n") = print(reduce(*, map(string, toLog)) * terminator)
 commandPrompt(::PeachShellAppType)::String = "-> "
-
-boot(app::PeachShellAppType) = begin
-    enter(app, app.currentMenu)
-end
 
 findCommand(app::PeachShellAppType, input::AbstractString)::Union{Tuple{Command,Vector{AbstractString}},Missing} =
     begin
@@ -40,13 +35,20 @@ commandNotFound(app::PeachShellAppType, input::AbstractString) = log(app, "Comma
 
 readEvalLoop(app::PeachShellAppType) = begin
     while true
-        print(commandPrompt(app))
+        log(app, commandPrompt(app), terminator="")
         commandInput = readline()
         command = findCommand(app, commandInput)
         if (ismissing(command))
             commandNotFound(app, commandInput)
+            continue
         end
     end
+end
+
+boot(app::PeachShellAppType) = begin
+    opening(app)
+    enter(app, currentMenu(app))
+    push!(app.systemWideCommands, ExitCommand())
 end
 
 start(app::PeachShellAppType) = begin
