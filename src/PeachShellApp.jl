@@ -1,25 +1,22 @@
-using DataStructures
-
-include("PeachShellInterface.jl")
+using DataStructures: Queue, Stack
 
 export PeachShellApp
 
 struct PeachShellApp <: PsApp
     events::Queue{Event}
     history::Stack{Menu}
-    menus::Vector{Menu} # Needed?
+    currentMenu::Menu
     systemWideCommands::Vector{Command}
 end
 
 PeachShellApp() = PeachShellApp(
     Queue{Event}(),
     Stack{Menu}(),
-    Vector{Menu}(),
+    MainMenu(),
     Vector{Command}())
 
 currentWindow(app::PeachShellApp)::Menu = first(app.history)
-initializerMenu(app::PeachShellApp)::Menu = first(app.menus)
-hookMenu(app::PeachShellApp, menu::Menu) = push!(app.menus, menu)
+currentMenu(app::PeachShellApp)::Menu = app.currentMenu
 hookSystemWideCommand(app::PeachShellApp, command::Command) = push!(
     app.systemWideCommands,
     command)
@@ -27,8 +24,7 @@ hookSystemWideCommand(app::PeachShellApp, command::Command) = push!(
 log(::PeachShellApp, toLog...) = println(reduce(*, map(string, toLog)))
 
 boot(app::PeachShellApp) = begin
-    log(app, "Booting...")
-    log(app, "...Booted")
+    enter(app, app.currentMenu)
 end
 
 start(app::PeachShellApp) = begin
