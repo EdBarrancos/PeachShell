@@ -1,5 +1,5 @@
 export Menu, Command, PsApp
-export currentWindow, hookSystemWideCommand, log, boot, start
+export currentWindow, hookSystemWideCommand, log, commandPrompt, boot, start
 export nested, enter
 
 abstract type Menu end;
@@ -13,6 +13,7 @@ hookSystemWideCommand(::PsApp, ::Command) = error("Not Implemented")
 boot(::PsApp) = error("Not Implemented")
 start(::PsApp) = error("Not Implemented")
 log(::PsApp, toLog...) = error("Not Implemented")
+commandPrompt(::PsApp)::String = ""
 
 nested(::Menu)::Vector{Menu} = Vector{Menu}()
 enter(::PsApp, ::Menu) = error("Not Implemented")

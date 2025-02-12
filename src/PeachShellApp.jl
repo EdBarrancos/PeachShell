@@ -2,7 +2,9 @@ using DataStructures: Queue, Stack
 
 export PeachShellApp
 
-struct PeachShellApp <: PsApp
+abstract type PeachShellAppType <: PsApp end
+
+struct PeachShellApp <: PeachShellAppType
     events::Queue{Event}
     history::Stack{Menu}
     currentMenu::Menu
@@ -11,22 +13,24 @@ end
 
 PeachShellApp() = PeachShellApp(
     Queue{Event}(),
-    Stack{Menu}(),
+    push!(Stack{Menu}(), MainMenu()),
     MainMenu(),
     Vector{Command}())
 
-currentWindow(app::PeachShellApp)::Menu = first(app.history)
-currentMenu(app::PeachShellApp)::Menu = app.currentMenu
-hookSystemWideCommand(app::PeachShellApp, command::Command) = push!(
+currentWindow(app::PeachShellAppType)::Menu = first(app.history)
+currentMenu(app::PeachShellAppType)::Menu = app.currentMenu
+hookSystemWideCommand(app::PeachShellAppType, command::Command) = push!(
     app.systemWideCommands,
     command)
 
-log(::PeachShellApp, toLog...) = println(reduce(*, map(string, toLog)))
+log(::PeachShellAppType, toLog...) = println(reduce(*, map(string, toLog)))
+commandPrompt(::PeachShellAppType)::String = "->"
 
-boot(app::PeachShellApp) = begin
+boot(app::PeachShellAppType) = begin
     enter(app, app.currentMenu)
 end
 
-start(app::PeachShellApp) = begin
+start(app::PeachShellAppType) = begin
     boot(app)
+    log(app, commandPrompt(app))
 end
