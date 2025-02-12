@@ -9,3 +9,11 @@ A Command Line Interface framework for julia
 - Tested
 - Chain commands
 - Customizability to the maximum
+
+## TODOs
+
+- [ ] Exit app command
+- [ ] Go to the previous menu command
+- [ ] Go to menu command
+- [ ] Chain commands
+- [ ] Buffers
