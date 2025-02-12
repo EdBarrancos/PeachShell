@@ -17,8 +17,15 @@ PeachShellApp() = PeachShellApp(
     Vector{Command}())
 
 opening(app::PeachShellAppType) = log(app, "Welcome to PeachShellApp")
-currentWindow(app::PeachShellAppType)::Menu = first(app.history)
 currentMenu(app::PeachShellAppType)::Menu = first(app.history)
+goToPreviousMenu(app::PeachShellAppType) = begin
+    pop!(app.history)
+    if isempty(app.history)
+        destroy(app)
+    end
+
+    enter(app, first(app.history))
+end
 hookSystemWideCommand(app::PeachShellAppType, command::Command) = push!(
     app.systemWideCommands,
     command)
@@ -55,7 +62,8 @@ end
 boot(app::PeachShellAppType) = begin
     opening(app)
     enter(app, currentMenu(app))
-    push!(app.systemWideCommands, ExitCommand())
+    hookSystemWideCommand(app, ExitCommand())
+    hookSystemWideCommand(app, BackCommand())
 end
 
 destroy(app::PeachShellAppType) = begin

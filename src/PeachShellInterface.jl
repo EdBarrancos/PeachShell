@@ -1,6 +1,13 @@
-export Menu, Command, PsApp
-export currentWindow, hookSystemWideCommand, log, boot, start, readEvalLoop, findCommand, commandNotFound
+export PsApp
+export currentMenu
+export log, findCommand, commandNotFound, hookSystemWideCommand
+export boot, start, readEvalLoop, destroy
+
+export Menu
 export nested, enter
+
+export Command
+export isCommand, getArgs, evaluate
 
 abstract type Menu end;
 abstract type Event end;
@@ -8,8 +15,8 @@ abstract type Command end;
 abstract type PsApp end;
 
 opening(::PsApp) = error("Not Implemeneted")
-currentWindow(::PsApp)::Menu = error("Not Implemented")
 currentMenu(::PsApp)::Menu = error("Not Implemented")
+goToPreviousMenu(::PsApp) = error("Not Implemented")
 hookSystemWideCommand(::PsApp, ::Command) = error("Not Implemented")
 boot(::PsApp) = error("Not Implemented")
 destroy(::PsApp) = error("Not Implemented")
