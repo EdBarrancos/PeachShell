@@ -20,4 +20,5 @@ A Command Line Interface framework for julia
 - [ ] Command autocomplete (Not sure how to do this)
 - [ ] History
 - [ ] Help command
-- [ ] Macro to initialize not implemented functions
+- [x] Macro to initialize not implemented functions
+- [ ] Shortcuts
