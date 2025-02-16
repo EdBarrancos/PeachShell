@@ -18,6 +18,10 @@ PeachShellApp() = PeachShellApp(
 
 opening(app::PeachShellAppType) = log(app, "Welcome to PeachShellApp")
 currentMenu(app::PeachShellAppType)::Menu = first(app.history)
+enterMenu(app::PeachShellAppType, menu::Menu) = begin
+    push!(app.history, menu)
+    enter(app, menu)
+end
 goToPreviousMenu(app::PeachShellAppType) = begin
     pop!(app.history)
     if isempty(app.history)
@@ -64,6 +68,7 @@ boot(app::PeachShellAppType) = begin
     enter(app, currentMenu(app))
     hookSystemWideCommand(app, ExitCommand())
     hookSystemWideCommand(app, BackCommand())
+    hookSystemWideCommand(app, MoveCommand())
 end
 
 destroy(app::PeachShellAppType) = begin

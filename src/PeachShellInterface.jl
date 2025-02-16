@@ -1,10 +1,11 @@
 export PsApp
 export currentMenu
-export log, findCommand, commandNotFound, hookSystemWideCommand
-export boot, start, readEvalLoop, destroy
+export log, enterMenu, destroy, hookSystemWideCommand
+export findCommand, commandNotFound
+export boot, start, readEvalLoop
 
 export Menu
-export nested, enter
+export nested, enter, hook!, isName
 
 export Command
 export isCommand, getArgs, evaluate
@@ -18,6 +19,7 @@ include("InternalMacros.jl")
 
 @interface opening(::PsApp)
 @interface currentMenu(::PsApp)::Menu
+@interface enterMenu(::PsApp, ::Menu)
 @interface goToPreviousMenu(::PsApp)
 @interface hookSystemWideCommand(::PsApp, ::Command)
 @interface boot(::PsApp)
@@ -30,6 +32,8 @@ include("InternalMacros.jl")
 
 @interface nested(::Menu)::Vector{Menu}
 enter(::PsApp, ::Menu) = begin end
+@interface hook!(::Menu, ::Menu)
+@interface isName(::Menu, ::AbstractString)
 
 @interface isCommand(::PsApp, ::Command, ::AbstractString)::Bool
 @interface getArgs(::PsApp, ::Command, ::AbstractString)::Vector{AbstractString}

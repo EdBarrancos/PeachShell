@@ -14,11 +14,14 @@ A Command Line Interface framework for julia
 
 - [x] Exit app command
 - [x] Go to the previous menu command
-- [ ] Go to menu command
+- [x] Go to menu command
+- [ ] Chain menu moves
+- [ ] Menu Commands
 - [ ] Chain commands
 - [ ] Buffers
 - [ ] Command autocomplete (Not sure how to do this)
-- [ ] History
-- [ ] Help command
+- [ ] History of commands (arrow up goes to previously written)
+- [ ] Help command - List all available commands
+- [ ] Help command - Specific help of one command (more detailed)
 - [x] Macro to initialize not implemented functions
 - [ ] Shortcuts
