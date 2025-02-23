@@ -1,6 +1,6 @@
 export PsApp
 export currentMenu
-export log, enterMenu, destroy, hookSystemWideCommand
+export log, enterMenu, destroy, hookSystemWideCommand, runCommand
 export findCommand, commandNotFound
 export boot, start, readEvalLoop
 
@@ -29,6 +29,7 @@ include("InternalMacros.jl")
 @interface readEvalLoop(::PsApp)
 @interface findCommand(::PsApp, ::AbstractString)::Union{Tuple{Command,Vector{AbstractString}},Missing}
 @interface commandNotFound(::PsApp, ::AbstractString)
+@interface runCommand(::PsApp, ::AbstractString)
 
 @interface nested(::Menu)::Vector{Menu}
 enter(::PsApp, ::Menu) = begin end

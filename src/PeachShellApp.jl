@@ -50,16 +50,20 @@ findCommand(app::PeachShellAppType, input::AbstractString)::Union{Tuple{Command,
 
 commandNotFound(app::PeachShellAppType, input::AbstractString) = log(app, "Command \"", input, "\" not found")
 
+runCommand(app::PeachShellAppType, input::AbstractString) = begin
+    command = findCommand(app, input)
+    if (ismissing(command))
+        commandNotFound(app, input)
+        return
+    end
+    evaluate(app, command[begin], command[end])
+end
+
 readEvalLoop(app::PeachShellAppType) = begin
     while true
         log(app, commandPrompt(app), terminator="")
         commandInput = readline()
-        command = findCommand(app, commandInput)
-        if (ismissing(command))
-            commandNotFound(app, commandInput)
-            continue
-        end
-        evaluate(app, command[begin], command[end])
+        runCommand(app, commandInput)
     end
 end
 
@@ -69,6 +73,7 @@ boot(app::PeachShellAppType) = begin
     hookSystemWideCommand(app, ExitCommand())
     hookSystemWideCommand(app, BackCommand())
     hookSystemWideCommand(app, MoveCommand())
+    hookSystemWideCommand(app, ChainCommand())
 end
 
 destroy(app::PeachShellAppType) = begin
