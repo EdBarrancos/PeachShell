@@ -15,9 +15,9 @@ A Command Line Interface framework for julia
 - [x] Exit app command
 - [x] Go to the previous menu command
 - [x] Go to menu command
-- [ ] Chain menu moves
-- [ ] Menu Commands
-- [ ] Chain commands
+- [x] Chain menu moves
+- [X] Menu Commands
+- [x] Chain commands
 - [ ] Buffers
 - [ ] Command autocomplete (Not sure how to do this)
 - [ ] History of commands (arrow up goes to previously written)

@@ -45,6 +45,12 @@ findCommand(app::PeachShellAppType, input::AbstractString)::Union{Tuple{Command,
                 return (command, getArgs(app, command, input))
             end
         end
+        # Then search menu commands
+        for command in getCommands(currentMenu(app))
+            if isCommand(app, command, input)
+                return (command, getArgs(app, command, input))
+            end
+        end
         return missing
     end
 

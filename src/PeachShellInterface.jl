@@ -5,7 +5,7 @@ export findCommand, commandNotFound
 export boot, start, readEvalLoop
 
 export Menu
-export nested, enter, hook!, isName
+export nested, enter, hook!, isName, getCommands
 
 export Command
 export isCommand, getArgs, evaluate
@@ -31,10 +31,11 @@ include("InternalMacros.jl")
 @interface commandNotFound(::PsApp, ::AbstractString)
 @interface runCommand(::PsApp, ::AbstractString)
 
-@interface nested(::Menu)::Vector{Menu}
+nested(::Menu)::Vector{Menu} = []
 enter(::PsApp, ::Menu) = begin end
 @interface hook!(::Menu, ::Menu)
 @interface isName(::Menu, ::AbstractString)
+getCommands(::Menu)::Vector{Command} = []
 
 @interface isCommand(::PsApp, ::Command, ::AbstractString)::Bool
 @interface getArgs(::PsApp, ::Command, ::AbstractString)::Vector{AbstractString}
