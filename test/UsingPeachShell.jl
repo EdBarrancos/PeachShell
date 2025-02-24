@@ -1,6 +1,6 @@
 include("../src/PeachShell.jl")
 using .PeachShell
-import .PeachShell: opening, log, commandPrompt, enter, isName, getCommands
+import .PeachShell: opening, log, commandPrompt, enter, isName, getCommands, name
 import .PeachShell: isCommand, getArgs, evaluate
 
 opening(app::PeachShellApp) = log(app, "Welcome the MyTestingPeachShellApp")
@@ -19,6 +19,7 @@ end
 hook!(currentMenu(app), MyMenu([Hi()]))
 enter(app::PsApp, ::MyMenu) = log(app, "Howdy stranger")
 isName(::MyMenu, name::AbstractString) = name == "myMenu"
+name(::MyMenu) = "myMenu"
 getCommands(menu::MyMenu) = menu.commands
 
 start(app)
