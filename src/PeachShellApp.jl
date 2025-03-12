@@ -39,7 +39,7 @@ log(::PeachShellAppType, toLog...; terminator="\n") = print(reduce(*, map(string
 commandPrompt(::PeachShellAppType)::String = "-> "
 clear(::PeachShellAppType) = print("\033c")
 
-findCommand(app::PeachShellAppType, input::AbstractString)::Union{Tuple{Command,Vector{AbstractString}},Missing} =
+findCommand(app::PeachShellAppType, input::AbstractString)::Union{Tuple{Command,Union{Vector,Missing}},Missing} =
     begin
         # Generic first then specific
         for command in app.systemWideCommands
@@ -64,6 +64,7 @@ runCommand(app::PeachShellAppType, input::AbstractString) = begin
         commandNotFound(app, input)
         return
     end
+    clear(app)
     evaluate(app, command[begin], command[end])
 end
 
@@ -71,7 +72,6 @@ readEvalLoop(app::PeachShellAppType) = begin
     while true
         log(app, commandPrompt(app), terminator="")
         commandInput = readline()
-        clear(app)
         runCommand(app, commandInput)
     end
 end

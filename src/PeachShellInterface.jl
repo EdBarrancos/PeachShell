@@ -40,6 +40,6 @@ getCommands(::Menu)::Vector{Command} = []
 name(::Menu)::Union{AbstractString,Missing} = missing
 
 @interface isCommand(::PsApp, ::Command, ::AbstractString)::Bool
-@interface getArgs(::PsApp, ::Command, ::AbstractString)::Vector{AbstractString}
-@interface evaluate(::PsApp, ::Command, ::Vector{AbstractString})
+@interface getArgs(::PsApp, ::Command, ::AbstractString)::Union{Missing,Vector}
+@interface evaluate(::PsApp, ::Command, ::Union{Missing,Vector})
 help(::PsApp, ::Command)::Union{AbstractString,Missing,Nothing} = missing
