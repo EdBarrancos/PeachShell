@@ -37,6 +37,7 @@ hookSystemWideCommand(app::PeachShellAppType, command::Command) = push!(
 
 log(::PeachShellAppType, toLog...; terminator="\n") = print(reduce(*, map(string, toLog)) * terminator)
 commandPrompt(::PeachShellAppType)::String = "-> "
+clear(::PeachShellAppType) = print("\033c")
 
 findCommand(app::PeachShellAppType, input::AbstractString)::Union{Tuple{Command,Vector{AbstractString}},Missing} =
     begin
@@ -70,11 +71,13 @@ readEvalLoop(app::PeachShellAppType) = begin
     while true
         log(app, commandPrompt(app), terminator="")
         commandInput = readline()
+        clear(app)
         runCommand(app, commandInput)
     end
 end
 
 boot(app::PeachShellAppType) = begin
+    clear(app)
     opening(app)
     enter(app, currentMenu(app))
     hookSystemWideCommand(app, ExitCommand())
