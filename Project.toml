@@ -1,7 +1,7 @@
 name = "PeachShell"
 uuid = "0b9cc722-52fa-4988-b8d1-5a24d5db61fd"
 authors = ["Eduardo Barrancos <eduardobarrancos11488@gmail.com>"]
-version = "0.1.0"
+version = "1.0.0"
 
 [deps]
 DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
