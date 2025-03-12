@@ -1,14 +1,14 @@
 export PsApp
-export currentMenu, systemWideCommands
-export log, enterMenu, destroy, hookSystemWideCommand, runCommand
-export findCommand, commandNotFound
-export boot, start, readEvalLoop
+export current_menu, systemwide_commands
+export log, enter_menu, destroy, hook_systemwide_command, runcommand
+export findcommand, command_not_found
+export boot, start, read_eval_loop
 
 export Menu
-export nested, enter, hook!, isName, getCommands, name
+export nested, enter, hook!, isname, getcommands, name
 
 export Command
-export isCommand, getArgs, evaluate, help
+export iscommand, getargs, evaluate, help
 
 abstract type Menu end;
 abstract type Event end;
@@ -18,28 +18,28 @@ abstract type PsApp end;
 include("InternalMacros.jl")
 
 @interface opening(::PsApp)
-@interface currentMenu(::PsApp)::Menu
-@interface enterMenu(::PsApp, ::Menu)
-@interface goToPreviousMenu(::PsApp)
-@interface hookSystemWideCommand(::PsApp, ::Command)
-@interface systemWideCommands(::PsApp)::Vector{Command}
+@interface current_menu(::PsApp)::Menu
+@interface enter_menu(::PsApp, ::Menu)
+@interface goto_previous_menu(::PsApp)
+@interface hook_systemwide_command(::PsApp, ::Command)
+@interface systemwide_commands(::PsApp)::Vector{Command}
 @interface boot(::PsApp)
 @interface destroy(::PsApp)
 @interface start(::PsApp)
 @interface log(::PsApp, toLog...)
-@interface readEvalLoop(::PsApp)
-@interface findCommand(::PsApp, ::AbstractString)::Union{Tuple{Command,Vector{AbstractString}},Missing}
-@interface commandNotFound(::PsApp, ::AbstractString)
-@interface runCommand(::PsApp, ::AbstractString)
+@interface read_eval_loop(::PsApp)
+@interface findcommand(::PsApp, ::AbstractString)::Union{Tuple{Command,Vector{AbstractString}},Missing}
+@interface command_not_found(::PsApp, ::AbstractString)
+@interface runcommand(::PsApp, ::AbstractString)
 
 nested(::Menu)::Vector{Menu} = []
 enter(::PsApp, ::Menu) = begin end
 @interface hook!(::Menu, ::Menu)
-@interface isName(::Menu, ::AbstractString)
-getCommands(::Menu)::Vector{Command} = []
+@interface isname(::Menu, ::AbstractString)
+getcommands(::Menu)::Vector{Command} = []
 name(::Menu)::Union{AbstractString,Missing} = missing
 
-@interface isCommand(::PsApp, ::Command, ::AbstractString)::Bool
-@interface getArgs(::PsApp, ::Command, ::AbstractString)::Union{Missing,Vector}
+@interface iscommand(::PsApp, ::Command, ::AbstractString)::Bool
+@interface getargs(::PsApp, ::Command, ::AbstractString)::Union{Missing,Vector}
 @interface evaluate(::PsApp, ::Command, ::Union{Missing,Vector})
 help(::PsApp, ::Command)::Union{AbstractString,Missing,Nothing} = missing

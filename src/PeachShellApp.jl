@@ -1,14 +1,14 @@
 using DataStructures: Queue, Stack
 
 export PeachShellApp
-export commandPrompt
+export command_prompt
 
 abstract type PeachShellAppType <: PsApp end
 
 struct PeachShellApp <: PeachShellAppType
     events::Queue{Event}
     history::Stack{Menu}
-    systemWideCommands::Vector{Command}
+    systemwide_commands::Vector{Command}
 end
 
 PeachShellApp() = PeachShellApp(
@@ -17,13 +17,13 @@ PeachShellApp() = PeachShellApp(
     Vector{Command}())
 
 opening(app::PeachShellAppType) = log(app, "Welcome to PeachShellApp")
-currentMenu(app::PeachShellAppType)::Menu = first(app.history)
-systemWideCommands(app::PeachShellAppType)::Vector{Command} = app.systemWideCommands
-enterMenu(app::PeachShellAppType, menu::Menu) = begin
+current_menu(app::PeachShellAppType)::Menu = first(app.history)
+systemwide_commands(app::PeachShellAppType)::Vector{Command} = app.systemwide_commands
+enter_menu(app::PeachShellAppType, menu::Menu) = begin
     push!(app.history, menu)
     enter(app, menu)
 end
-goToPreviousMenu(app::PeachShellAppType) = begin
+goto_previous_menu(app::PeachShellAppType) = begin
     pop!(app.history)
     if isempty(app.history)
         destroy(app)
@@ -31,60 +31,60 @@ goToPreviousMenu(app::PeachShellAppType) = begin
 
     enter(app, first(app.history))
 end
-hookSystemWideCommand(app::PeachShellAppType, command::Command) = push!(
-    app.systemWideCommands,
+hook_systemwide_command(app::PeachShellAppType, command::Command) = push!(
+    app.systemwide_commands,
     command)
 
 log(::PeachShellAppType, toLog...; terminator="\n") = print(reduce(*, map(string, toLog)) * terminator)
-commandPrompt(::PeachShellAppType)::String = "-> "
+command_prompt(::PeachShellAppType)::String = "-> "
 clear(::PeachShellAppType) = print("\033c")
 
-findCommand(app::PeachShellAppType, input::AbstractString)::Union{Tuple{Command,Union{Vector,Missing}},Missing} =
+findcommand(app::PeachShellAppType, input::AbstractString)::Union{Tuple{Command,Union{Vector,Missing}},Missing} =
     begin
         # Generic first then specific
-        for command in app.systemWideCommands
-            if isCommand(app, command, input)
-                return (command, getArgs(app, command, input))
+        for command in app.systemwide_commands
+            if iscommand(app, command, input)
+                return (command, getargs(app, command, input))
             end
         end
         # Then search menu commands
-        for command in getCommands(currentMenu(app))
-            if isCommand(app, command, input)
-                return (command, getArgs(app, command, input))
+        for command in getcommands(current_menu(app))
+            if iscommand(app, command, input)
+                return (command, getargs(app, command, input))
             end
         end
         return missing
     end
 
-commandNotFound(app::PeachShellAppType, input::AbstractString) = log(app, "Command \"", input, "\" not found")
+command_not_found(app::PeachShellAppType, input::AbstractString) = log(app, "Command \"", input, "\" not found")
 
-runCommand(app::PeachShellAppType, input::AbstractString) = begin
-    command = findCommand(app, input)
+runcommand(app::PeachShellAppType, input::AbstractString) = begin
+    command = findcommand(app, input)
     if (ismissing(command))
-        commandNotFound(app, input)
+        command_not_found(app, input)
         return
     end
     clear(app)
     evaluate(app, command[begin], command[end])
 end
 
-readEvalLoop(app::PeachShellAppType) = begin
+read_eval_loop(app::PeachShellAppType) = begin
     while true
-        log(app, commandPrompt(app), terminator="")
+        log(app, command_prompt(app), terminator="")
         commandInput = readline()
-        runCommand(app, commandInput)
+        runcommand(app, commandInput)
     end
 end
 
 boot(app::PeachShellAppType) = begin
     clear(app)
     opening(app)
-    enter(app, currentMenu(app))
-    hookSystemWideCommand(app, ExitCommand())
-    hookSystemWideCommand(app, BackCommand())
-    hookSystemWideCommand(app, MoveCommand())
-    hookSystemWideCommand(app, ChainCommand())
-    hookSystemWideCommand(app, HelpCommand())
+    enter(app, current_menu(app))
+    hook_systemwide_command(app, ExitCommand())
+    hook_systemwide_command(app, BackCommand())
+    hook_systemwide_command(app, MoveCommand())
+    hook_systemwide_command(app, ChainCommand())
+    hook_systemwide_command(app, HelpCommand())
 end
 
 destroy(app::PeachShellAppType) = begin
@@ -94,5 +94,5 @@ end
 
 start(app::PeachShellAppType) = begin
     boot(app)
-    readEvalLoop(app)
+    read_eval_loop(app)
 end
