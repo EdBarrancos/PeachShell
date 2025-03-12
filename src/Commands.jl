@@ -63,4 +63,3 @@ evaluate(app::PsApp, ::HelpCommand, input::Missing) = begin
     end
 end
 help(::PsApp, ::HelpCommand) = nothing
-
